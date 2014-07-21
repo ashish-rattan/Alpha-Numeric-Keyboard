@@ -1,8 +1,8 @@
-Ext.define('AlphaNumpadfield',{
+Ext.define('ux.AlphaNumpadfield',{
     extend: 'Ext.field.Text',
     xtype: 'alphanumpadfield',
     alias : 'widget.alphanumpadfield',
-    requires : ['AlphaNumpad'],    
+    requires : ['ux.AlphaNumpad'],    
     
     config: {
         /**
@@ -11,13 +11,6 @@ Ext.define('AlphaNumpadfield',{
          */              
         alphaNumpad: false,
 		
-		
-		/**
-		 * @public
-		 * Allow single or multiple dots. 
-		 */
-		singleDot: true,         	
-			
 		/**
 		 * @public
 		 * Hide the alphaNumpad field on route change
@@ -39,12 +32,6 @@ Ext.define('AlphaNumpadfield',{
 		maxLength:null,
 		
 		/**
-		 * @cfg {Boolean} if hypen can be inserted in the field
-		 * @public
-		 */
-		allowHyphen: false,
-		
-		/**
 		*@cfg {Boolean} if set to true allows to enter numeric password, default false
 		*@public
 		*/
@@ -54,7 +41,7 @@ Ext.define('AlphaNumpadfield',{
 		*@cfg {Function} To handle blur event on numpadfield when alphaNumpad hides
 		*@public
 		*/
-		afterNumBlur:null,
+		afterFieldBlur:null,
 		
 		/**
 		*@cfg {Function} To handle key up events when keys on alphaNumpad is clicked
@@ -66,7 +53,13 @@ Ext.define('AlphaNumpadfield',{
 		*@cfg {Function} To handle focus events on numpadfield when alphaNumpad is shown
 		*@public
 		*/
-		afterNumFocus:null
+		afterFieldFocus:null,
+		
+		/**
+		*@cfg {Function} To handle initialize event of numpadfield
+		*@public
+		*/
+		afterFieldInitialize:null
     },
     
     initialize: function() {
@@ -74,6 +67,7 @@ Ext.define('AlphaNumpadfield',{
 		if(this.getPasswordField()) {
 			this.addCls('paymentCVV');
 		}
+		this.afterFieldInitialize();
         this.callParent();
 		
 	/* 
@@ -111,15 +105,13 @@ Ext.define('AlphaNumpadfield',{
 
         if(!alphaNumpad){
             
-            alphaNumpad = Ext.create('AlphaNumpad',{
+            alphaNumpad = Ext.create('ux.AlphaNumpad',{
                 // textfield
                 alphaNumfield: alphaNumfield,
                 
                 width: '100%',
                 height: 'auto',	
 				padding: 2,
-                disableFloatValues:  this.config.disableFloatValues,
-				allowHyphen : this.getAllowHyphen(),
                 maxLength: this.getMaxLength(),
 				passwordField:this.getPasswordField()
             }); 
@@ -129,8 +121,8 @@ Ext.define('AlphaNumpadfield',{
         }
         
 		//Handle focus events when keyboard shows
-		if(alphaNumfield.config.afterNumFocus != null && typeof alphaNumfield.config.afterNumFocus == 'function') {
-			alphaNumfield.config.afterNumFocus(alphaNumfield);
+		if(alphaNumfield.config.afterFieldFocus != null && typeof alphaNumfield.config.afterFieldFocus == 'function') {
+			alphaNumfield.config.afterFieldFocus(alphaNumfield);
 		}
 		
         alphaNumpad.down('formpanel').setValues({ inputValue : alphaNumfield.getValue() });

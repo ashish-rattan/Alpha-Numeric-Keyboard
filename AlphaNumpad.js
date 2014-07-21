@@ -1,4 +1,4 @@
-Ext.define('AlphaNumpad',{
+Ext.define('ux.AlphaNumpad',{
     extend: 'Ext.Panel',
     xtype: 'alphanumpad',
 
@@ -24,10 +24,6 @@ Ext.define('AlphaNumpad',{
 		
         hideOnMaskTap: true,
         
-		//disableFloatValues : false,	
-		
-		//allowHyphen : false,	
-		
 		maxLength : null,
 		
 		layout: 'vbox',
@@ -379,12 +375,6 @@ Ext.define('AlphaNumpad',{
 			scope : me,
 			hide: 'deconstruct'
 		});
-		
-		me.element.on('doubletap', function(e){
-			alert("Double");
-			e.preventDefault();
-			return false;
-		});
     },
 	
 	/*
@@ -396,8 +386,8 @@ Ext.define('AlphaNumpad',{
 		alphaNumpadField._alphaNumpad = false;
 		
 		//Handle blur events when keyboard hides
-		if(alphaNumpadField.config.afterNumBlur != null && typeof alphaNumpadField.config.afterNumBlur == 'function') {
-			alphaNumpadField.config.afterNumBlur(alphaNumpadField);
+		if(alphaNumpadField.config.afterFieldBlur != null && typeof alphaNumpadField.config.afterFieldBlur == 'function') {
+			alphaNumpadField.config.afterFieldBlur(alphaNumpadField);
 		}
 		
 		this.un({
@@ -465,7 +455,6 @@ Ext.define('AlphaNumpad',{
 	
     onKeyTap: function(me,e){
 		e.preventDefault();
-		console.log(me.getData());
 		var thisObj = this;
 		var alphaNumfield = thisObj.config.alphaNumfield;
         var key = me.getData().text;
@@ -570,9 +559,9 @@ Ext.define('AlphaNumpad',{
 		}
 		
 		//Handle key up events when keyboard shows
-		/*if(alphaNumfield.config.afterKeyTap != null && typeof alphaNumfield.config.afterKeyTap == 'function') {
+		if(alphaNumfield.config.afterKeyTap != null && typeof alphaNumfield.config.afterKeyTap == 'function') {
 			alphaNumfield.config.afterKeyTap(alphaNumfield,keyCode);
-		}*/
+		}
 		
 		if(key == 'ok'){			
 			thisObj.hide();
